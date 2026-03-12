@@ -1,12 +1,8 @@
 # CTU Workshop 1 3/13/2026
 
-# IN PROGRESS
-
 # Author:   Chris Poulos
-# Date:     3/13/2026
-# Updated:  
 
-# Topics - 
+#### Overview ####
 
 # 1) Setting up and using RStudio
 
@@ -14,11 +10,35 @@
 
 # 3) Data structures
 
-# 3.1) Objects- AKA variables. Object hold data
+# 4) Installing and loading packages
+
+# 5) Using tidycensus to retrieve, clean, and analyze using practical problem
+
+#### 1) Setting up and using RStudio ####
+
+# View > Panes to change place of panels (Source, Environments, Console, and Output)
+
+# Tools > Global Options ... Change settings, design, font, etc.
+
+# "#" comment out, "#### WORDS ####" to make book marks
+
+# Running lines of code "Run" button in upper right of Scource panel or CTRL+Enter
+
+#### 2) Creating and navigating to a work space #### 
+
+# Good practices 
+
+# - create a main folder (workspace), add scripts folder, data/raw, and data/processed folders
+# - naming convention for files, folders, and variables: use lowercase,"_" for spaces.
+# - for files, add "_yyyy-mm-dd" prior to the extension.
+
+#### 3) Data structures ####
+
+#### 3.1) Objects ####
+
+# AKA variables. Object store values / hold data. Store data in an object with "<-" or "="
 
 # character (string) data
-
-# Store data in an object with "<-" or "="
 
 object <- "blah"
 object2 = "blah2"
@@ -27,18 +47,28 @@ class(object)
 
 # numeric data
 
-a <- 30*30
+a <- 30/29
 class(a)
 
-# 3.2) vector data (think: a column in excel)
+# integer data
+
+b <- 3L+3L
+class(b)
+
+#### 3.2) vector data  #### 
+
+# (think of a column in excel)
 
 column_a <- c(1,2,3)
 column_b <- c("a","b","c")
 
-# 3.3)  data frames aka tabular data (think: a spread sheet in excel).
+#### 3.3)  Data frames  ####
 
+# aka tabular (rows and columns) data (think: a spread sheet in excel).
 
-# 3.4) Create a data frame using data.frame - a built in R function
+#### 3.3.1) Create a data frame  ####
+
+# using data.frame - a built in R function
 
 df1 <- data.frame(
   fruit = c("Apples","Bananas","Avocados"),
@@ -53,11 +83,11 @@ class(df1$count)
 class(df1$quality)
 
 
-# 3.5) Creating a data frame with vector data
+#### 3.3.2) Creating a data frame with vector data  ####
 
 df2 <- data.frame(column_a,column_b)
 
-# 3.6) Read in a spread sheet as a dataframe
+#### 3.3.3) Read in a spread sheet as a dataframe  ####
 
 mil_ref <- read.csv("C:/Users/christopherpoulos/work/projects/r_ctu_workshop/data/raw/millionaire_tax_referendum_2024.csv")
 
@@ -67,27 +97,27 @@ colnames(mil_ref)
 
 mil_ref_cols = data.frame(colnames(mil_ref))
 
-# 3.7) Adding new vectors (columns)
+#### 3.3.4) Adding new vectors  ####
 
-df3$percent_yes = df3$YES/(df3$NO+df3$YES)
-df3$percent_turnout = (df3$YES+df3$NO)/df3$Registration
+mil_ref$percent_yes = mil_ref$YES/(mil_ref$NO+mil_ref$YES)
+mil_ref$percent_turnout = (mil_ref$YES+mil_ref$NO)/mil_ref$Registration
 
 # Useful to check working. Applies the same steps for all rows. More legible than excel. When this goes wrong in excel - EBF Excel Example  
 
-# 4) Installing and loading packages
+#### 4) Installing and loading packages  ####
 
 # Package is a set of tools in R.
 
-# Only need to install once
+# Only need to install once (delete "#" in front of install.packages to run)
 
-install.packages("tidyverse") 
-install.packages("tidycensus") 
+#install.packages("tidyverse") 
+#install.packages("tidycensus") 
 
 # For CTU - To avoid permissions issues, create a user library
 
 # Create User library
-dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)
 
+dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)
 
 # Set path hierarchy so user library is first, then the system library
 
@@ -95,24 +125,34 @@ dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)
 
 # Install xml2 and tidycensus into user library
 
-install.packages("tidycensus", lib = Sys.getenv("R_LIBS_USER"), dependencies = TRUE)
+# install.packages("tidycensus", lib = Sys.getenv("R_LIBS_USER"), dependencies = TRUE)
 
-# Load in package
+# Load in packages
 
 library(tidyverse)
 library(tidycensus)
 
-# Get census API key (https://api.census.gov/data/key_signup.html)
+#### 5) Using tidycensus  ####
 
-census_api_key("c057294e4fae51ea38e8fc2898e583a8c7693c04",install=TRUE) # Set to TRUE means you don't have to do this in the future.
+# to retrieve, clean, and analyze
 
-# You can ignore this - Using an environmental variable
+# Get census API key (https://api.census.gov/data/key_signup.html) (remove "#" infront of census_api_key() to run)
+
+#census_api_key("c057294e4fae51ea38e8fc2898e583a8c7693c04",install=TRUE) # Set to TRUE means you don't have to do this in the future.
+
+# You can ignore this unless - Using an environmental variable (ie for sensitive data like API keys)
 #census_api_key(api_key,install=TRUE) # Set to TRUE means you don't have to do this in the future.
 #api_key <- Sys.getenv("census_api_key")
 
-# Getting ACS data
+#### Practical problem  ####
+
+# What is the percentage of kids 0-5 by census tract.
+
+# Look up variable names
 
 acs_vars <- load_variables(year=2023,"acs5",cache=TRUE)
+
+# Get total population
 
 total <- get_acs(
   survey = "acs5",
@@ -123,6 +163,8 @@ total <- get_acs(
   year = 2023
 )
 
+# Get boys 5 and under
+
 und_5_boys <- get_acs(
   survey = "acs5",
   geography = "tract",
@@ -132,6 +174,8 @@ und_5_boys <- get_acs(
   year = 2023
 )
 
+# Get girls 5 and under
+
 und_5_girls <- get_acs(
   survey = "acs5",
   geography = "tract",
@@ -140,6 +184,8 @@ und_5_girls <- get_acs(
   county = 031,
   year = 2023
 )
+
+# Get all 3 variables at once. Long-form data.
 
 df <- get_acs(
   survey = "acs5",
@@ -153,15 +199,17 @@ df <- get_acs(
 # Clean up data
 
 df_copy <- df |>
+  # Rename variable names for legibility
   mutate(
   variable = recode(variable, 
                     "B01001_001" = "total",
                     "B01001_003" = "under_5_boys",
                     "B01001_027" = "under_5_girls")
   ) |>
+  # Keep necessary columns
   select("GEOID","variable","estimate")
 
-# Pivot wide
+# Pivot wider (like a pivot table in excel)
 
 df_wide <- df_copy |>
   pivot_wider(id_cols = "GEOID",
@@ -179,13 +227,13 @@ df_wide$under_5_per = df_wide$under_5_total / df_wide$total
 chi_cts = read_csv("C:/Users/christopherpoulos/work/projects/r_ctu_workshop/data/raw/Census_Tracts_20260312.csv")
 
 mdir <- "C:/Users/christopherpoulos/work/projects/r_ctu_workshop"
-chi_cts = read_csv(paste(mdir,"/data/raw/Census_Tracts_20260312.csv"))
+chi_cts = read_csv(paste0(mdir,"/data/raw/Census_Tracts_20260312.csv"))
 
 class(chi_cts$CENSUS_T_1)
 class(df_wide$GEOID)
 
-chi_cts$CENSUS_T_1 <- as.character(chi_cts$CENSUS_T_1)
-class(chi_cts$CENSUS_T_1)
+df_wide$GEOID <- as.numeric(df_wide$GEOID)
+class(df_wide$GEOID)
 
 chi_cts$ct_length <- nchar(chi_cts$CENSUS_T_1)
 df_wide$ct_length <- nchar(df_wide$GEOID)
@@ -202,11 +250,20 @@ df_chi_join <- left_join(df_wide,chi_cts_copy,by = c("GEOID"="CENSUS_T_1"),keep=
 
 # Children under 5 as percent of population Chicago Versus Cook
 
+df_grouped <- df_chi_join
+
+df_grouped$chi_cts[df_grouped$chi_cts == "chi_cts"] <- "chi"
+df_grouped$chi_cts[is.na(df_grouped$chi_cts)] <- "cook_not_chi"
 
 
+df_grouped <- df_grouped |>
+  group_by(chi_cts) |>
+  summarize(count = n(),
+            sum = sum(under_5_per,na.rm=TRUE))
   
 
-
+df_chi_join |>
+  summarise(count_chi_cts = sum(chi_cts == "chi_cts", na.rm = TRUE))
 
 
 
