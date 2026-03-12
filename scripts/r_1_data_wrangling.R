@@ -1,5 +1,7 @@
 # CTU Workshop 1 3/13/2026
 
+# IN PROGRESS
+
 # Author:   Chris Poulos
 # Date:     3/13/2026
 # Updated:  
@@ -112,7 +114,8 @@ census_api_key("c057294e4fae51ea38e8fc2898e583a8c7693c04",install=TRUE) # Set to
 
 acs_vars <- load_variables(year=2023,"acs5",cache=TRUE)
 
-total3 <- get_acs(
+total <- get_acs(
+  survey = "acs5",
   geography = "tract",
   variables = "B01001_001",
   state = 17,
@@ -121,21 +124,91 @@ total3 <- get_acs(
 )
 
 und_5_boys <- get_acs(
+  survey = "acs5",
   geography = "tract",
   variables = "B01001_003",
-  variables = "B01001_001",
   state = 17,
   county = 031,
   year = 2023
 )
 
 und_5_girls <- get_acs(
+  survey = "acs5",
   geography = "tract",
   variables = "B01001_027",
-  variables = "B01001_001",
   state = 17,
   county = 031,
   year = 2023
 )
+
+df <- get_acs(
+  survey = "acs5",
+  geography = "tract",
+  variables = c("B01001_001","B01001_003","B01001_027"),
+  state = 17,
+  county = 031,
+  year = 2023
+)
+
+# Clean up data
+
+df_copy <- df |>
+  mutate(
+  variable = recode(variable, 
+                    "B01001_001" = "total",
+                    "B01001_003" = "under_5_boys",
+                    "B01001_027" = "under_5_girls")
+  ) |>
+  select("GEOID","variable","estimate")
+
+# Pivot wide
+
+df_wide <- df_copy |>
+  pivot_wider(id_cols = "GEOID",
+              names_from="variable",
+              values_from="estimate")
+
+# Get total under 5 and percent of under 5 to total
+
+df_wide$under_5_total = df_wide$under_5_boys + df_wide$under_5_girls
+
+df_wide$under_5_per = df_wide$under_5_total / df_wide$total
+
+# Add Chicago census tracts
+
+chi_cts = read_csv("C:/Users/christopherpoulos/work/projects/r_ctu_workshop/data/raw/Census_Tracts_20260312.csv")
+
+mdir <- "C:/Users/christopherpoulos/work/projects/r_ctu_workshop"
+chi_cts = read_csv(paste(mdir,"/data/raw/Census_Tracts_20260312.csv"))
+
+class(chi_cts$CENSUS_T_1)
+class(df_wide$GEOID)
+
+chi_cts$CENSUS_T_1 <- as.character(chi_cts$CENSUS_T_1)
+class(chi_cts$CENSUS_T_1)
+
+chi_cts$ct_length <- nchar(chi_cts$CENSUS_T_1)
+df_wide$ct_length <- nchar(df_wide$GEOID)
+
+# Clean up chi_cts for to merge with df_wide
+
+chi_cts_copy <- chi_cts |>
+  select(CENSUS_T_1) |> # select only CT ID column
+  mutate(chi_cts = "chi_cts")
+
+# Join Chicago CTs with Census data
+
+df_chi_join <- left_join(df_wide,chi_cts_copy,by = c("GEOID"="CENSUS_T_1"),keep=FALSE)
+
+# Children under 5 as percent of population Chicago Versus Cook
+
+
+
+  
+
+
+
+
+
 
 
