@@ -8,9 +8,9 @@
 We will work through Kyle Walker’s free online book, [Analyzing US Census Data: Methods, Maps, and Models in R](https://walker-data.com/census-r/).
 
 Kyle Walker is also the developer of the tidycensus package, which helps you access and work with:
-- Decennial Census data (the Census)
-- American Community Survey (ACS) 5-year data, including economic and social indicators
-- Public Use Micro Data
+- Decennial Census data ("The" Census - full count of everyone);
+- American Community Survey (ACS) 5-year data (survey used to collect economic and social information);
+- Public Use Micro Data (anonymized individual-level records).
 
 This book is an excellent practical guide for learning both R and tidycensus.
 
@@ -25,7 +25,7 @@ Please complete the following before the workshop:
 
 ## Workshop agenda
 
-#### <u>3/13/2026</u>
+#### <ins>3/13/2026</ins>
 
 We will cover Kyle Walker, Chapters 1 through 3. If possible try and read it but the script "r_1_data_wrangling.R" in /scripts reviews everything I'd like to cover. 
 
@@ -33,4 +33,4 @@ We will cover Kyle Walker, Chapters 1 through 3. If possible try and read it but
 - Chapter 2 reviews tidycensus and how to retrieve Census data. 
 - Chapter 3 goes over some "data wrangling" tools.
 
-#### <u>NEXT DATE?</u>
+#### <ins>Next date?</ins>
