@@ -1,6 +1,7 @@
 # CTU Workshop 1 3/13/2026
 
 # Author:   Chris Poulos
+# Date:     3/13/2026
 
 #### Overview ####
 
@@ -8,7 +9,7 @@
 
 # 2) Creating and navigating to a work space
 
-# 3) Data structures
+# 3) Data structures and data types
 
 # 4) Installing and loading packages
 
@@ -20,15 +21,14 @@
 
 # Tools > Global Options ... Change settings, design, font, etc.
 
-# "#" comment out, "#### WORDS ####" to make book marks
+# "#" comment out in a script, "#### WORDS ####" to make table of contents
 
-# Running lines of code "Run" button in upper right of Scource panel or CTRL+Enter
+# Running lines of code "Run" button in upper right of Source panel or CTRL+Enter
 
 #### 2) Creating and navigating to a work space #### 
 
-# Good practices 
-
-# - create a main folder (workspace), add scripts folder, data/raw, and data/processed folders
+# Good practices inlcude:
+# - create a main folder (work space), add scripts folder and data folder. Nested in data add raw (for untouched data) and processed (for processed data)
 # - naming convention for files, folders, and variables: use lowercase,"_" for spaces.
 # - for files, add "_yyyy-mm-dd" prior to the extension.
 
@@ -40,8 +40,11 @@
 
 # character (string) data
 
-object <- "blah"
+anything <- "blah"
 object2 = "blah2"
+
+
+ids = c(12,13,14)
 
 class(object)
 
@@ -89,7 +92,11 @@ df2 <- data.frame(column_a,column_b)
 
 #### 3.3.3) Read in a spread sheet as a dataframe  ####
 
-mil_ref <- read.csv("C:/Users/christopherpoulos/work/projects/r_ctu_workshop/data/raw/millionaire_tax_referendum_2024.csv")
+# Note: Set working directory: Session > Set Working Directory > Choose Directory or Ctrl + Shift + H
+
+# Set mine as the main folder r_ctu_workshop. So now when I read it in I have to specificy in the data folder, in the raw folder.
+
+mil_ref <- read.csv("data/raw/millionaire_tax_referendum_2024.csv")
 
 # Explore column names
 
@@ -99,8 +106,9 @@ mil_ref_cols = data.frame(colnames(mil_ref))
 
 #### 3.3.4) Adding new vectors  ####
 
-mil_ref$percent_yes = mil_ref$YES/(mil_ref$NO+mil_ref$YES)
-mil_ref$percent_turnout = (mil_ref$YES+mil_ref$NO)/mil_ref$Registration
+mil_ref$percent_yes <- mil_ref$YES/(mil_ref$NO+mil_ref$YES)
+
+mil_ref$percent_turnout <- (mil_ref$YES+mil_ref$NO)/mil_ref$Registration
 
 # Useful to check working. Applies the same steps for all rows. More legible than excel. When this goes wrong in excel - EBF Excel Example  
 
@@ -263,6 +271,10 @@ df_grouped <- df_grouped |>
             sum_total = sum(total,na.rm=TRUE)) |>
   mutate(per_und_5 = sum_und_5/sum_total)
 
+# Save file as csv
+
+write.csv(df_grouped,file = paste0(mdir,"/data/processed/under_5_chi_v_cook_",Sys.Date(),".csv"))
+write_csv(df_grouped,file = paste0(mdir,"/data/processed/under_5_chi_v_cook_readr_",Sys.Date(),".csv"))
 
 
 
