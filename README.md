@@ -1,4 +1,6 @@
-# [R](img/r_logo1.png) Workshops
+# R Workshops
+
+
 
 ## Outcomes
 - Familiarity with R packages to retrieve, clean, and analyze (spatial) data.
