@@ -35,4 +35,7 @@ We will cover Kyle Walker, Chapters 1 through 3. If possible try and read it but
 - Chapter 2 reviews tidycensus and how to retrieve Census data. 
 - Chapter 3 goes over some "data wrangling" tools.
 
-#### Next date?
+#### 3/20/2026 3-4pm
+
+- Data cleaning review
+- ggplot
