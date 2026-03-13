@@ -248,7 +248,7 @@ chi_cts_copy <- chi_cts |>
 
 df_chi_join <- left_join(df_wide,chi_cts_copy,by = c("GEOID"="CENSUS_T_1"),keep=FALSE)
 
-# Children under 5 as percent of population Chicago Versus Cook
+# Children under 5 as percent of population Chicago Versus Cook (not Chicago)
 
 df_grouped <- df_chi_join
 
@@ -259,11 +259,10 @@ df_grouped$chi_cts[is.na(df_grouped$chi_cts)] <- "cook_not_chi"
 df_grouped <- df_grouped |>
   group_by(chi_cts) |>
   summarize(count = n(),
-            sum = sum(under_5_per,na.rm=TRUE))
-  
+            sum_und_5 = sum(under_5_total,na.rm=TRUE),
+            sum_total = sum(total,na.rm=TRUE)) |>
+  mutate(per_und_5 = sum_und_5/sum_total)
 
-df_chi_join |>
-  summarise(count_chi_cts = sum(chi_cts == "chi_cts", na.rm = TRUE))
 
 
 
