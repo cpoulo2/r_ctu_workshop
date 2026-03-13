@@ -1,4 +1,4 @@
-# R Workshops
+# [R](img/r_logo.png) Workshops
 
 ## Outcomes
 - Familiarity with R packages to retrieve, clean, and analyze (spatial) data.
@@ -25,7 +25,7 @@ Please complete the following before the workshop:
 
 ## Workshop agenda
 
-#### <ins>3/13/2026</ins>
+#### 3/13/2026
 
 We will cover Kyle Walker, Chapters 1 through 3. If possible try and read it but the script "r_1_data_wrangling.R" in /scripts reviews everything I'd like to cover. 
 
@@ -33,4 +33,4 @@ We will cover Kyle Walker, Chapters 1 through 3. If possible try and read it but
 - Chapter 2 reviews tidycensus and how to retrieve Census data. 
 - Chapter 3 goes over some "data wrangling" tools.
 
-#### <ins>Next date?</ins>
+#### Next date?
